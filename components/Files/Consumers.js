@@ -15,7 +15,7 @@
 */
 
 import { File } from '@asyncapi/generator-react-sdk';
-import { PackageDeclaration, Class, ClassConstructor, ChannelToMessage } from '../Common';
+import { PackageDeclaration, Class, ClassConstructor } from '../Common';
 import { ConsumerDeclaration, ConsumerImports, ConsumerConstructor, ReceiveMessage } from '../Consumer';
 import { toJavaClassName, javaPackageToPath } from '../../utils/String.utils';
 
@@ -28,7 +28,7 @@ export function Consumers(asyncapi, channels, params) {
 
     if (channel.subscribe()) {
       const message = channel.subscribe().message();
-      
+
       return (
         <File name={`${packagePath}${className}.java`}>
           <PackageDeclaration path={params.package}></PackageDeclaration>

@@ -7,14 +7,14 @@ export function collateModelNames(asyncapi) {
 export function collateModels(asyncapi) {
   const models = {};
   
-  for (const [channelName, channel] of Object.entries(asyncapi.channels())) {
+  for (const channel of Object.values(asyncapi.channels())) {
     if (channel.publish()) {
-      for (const [messageName, message] of Object.entries(channel.publish().messages())) {
+      for (const  message of Object.values(channel.publish().messages())) {
         models[toJavaClassName(message.uid())] = message;
       }
     }
     if (channel.subscribe()) {
-      for (const [messageName, message] of Object.entries(channel.subscribe().messages())) {
+      for (const message of Object.values(channel.subscribe().messages())) {
         models[toJavaClassName(message.uid())] = message;
       }
     }
@@ -22,8 +22,8 @@ export function collateModels(asyncapi) {
 
   // Components may exist which are not used anywhere, still include them here
   
-  if(asyncapi.components() && asyncapi.components().messages()){
-    for (const [messageName, message] of Object.entries(asyncapi.components().messages())) {
+  if (asyncapi.components() && asyncapi.components().messages()) {
+    for (const message of Object.values(asyncapi.components().messages())) {
       models[toJavaClassName(message.uid())] = message;
     }
   }

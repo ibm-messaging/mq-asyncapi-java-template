@@ -20,7 +20,6 @@ import { javaPackageToPath, toJavaClassName } from '../../utils/String.utils';
 import { File } from '@asyncapi/generator-react-sdk';
 import { createJavaConstructorArgs } from '../../utils/Types.utils';
 import { PackageDeclaration } from '../Common';
-import { collateModels } from '../../utils/Models.utils';
 
 export function Demo(asyncapi, params) {
   const channels = Object.entries(asyncapi.channels()).map(([key, value]) => ({key,value}));
