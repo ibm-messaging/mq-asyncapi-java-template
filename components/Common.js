@@ -132,7 +132,6 @@ export function EnvJson({ asyncapi, params }) {
 }
 
 export function ImportModels({ asyncapi, params }) {
-  // Collect all models from YAML
   const modelNames = collateModelNames(asyncapi);
 
   return modelNames.map(messageName => {
