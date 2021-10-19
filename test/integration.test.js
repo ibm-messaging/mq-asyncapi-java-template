@@ -73,6 +73,9 @@ describe('template integration tests using the generator', () => {
   });
 
   it('should generate dynamic model files', async () => {
+    // This test also accounts for models which are defined in the
+    // components but not actively used by channel
+
     jest.setTimeout(30000);
   
     const OUTPUT_DIR = generateFolderName();
@@ -81,7 +84,7 @@ describe('template integration tests using the generator', () => {
     const params = {
       server: 'production'
     };
-  
+    
     const generator = new Generator(path.normalize('./'), OUTPUT_DIR, { forceWrite: true, templateParams: params });
     await generator.generateFromFile(path.resolve('test', 'mocks/many-messages.yml'));
 
