@@ -34,16 +34,12 @@ import { Producers } from '../components/Files/Producers';
 import { Consumers } from '../components/Files/Consumers';
 
 export default function({ asyncapi, params }) {
-  if (!asyncapi.hasComponents()) {
-    return null;
-  }
-
   const channels = asyncapi.channels();
 
   const toRender = {
     producers: Producers(asyncapi, channels, params),
     connectionHelper: ConnectionHelperRenderer(params),
-    models: Models(asyncapi.components().messages(), params),
+    models: Models(asyncapi, params),
     consumers: Consumers(asyncapi, channels, params),
     loggingHelper: LoggingHelperRenderer(params),
     connectionRender: ConnectionRender(params),

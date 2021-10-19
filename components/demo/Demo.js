@@ -20,15 +20,16 @@ import { javaPackageToPath, toJavaClassName } from '../../utils/String.utils';
 import { File } from '@asyncapi/generator-react-sdk';
 import { createJavaConstructorArgs } from '../../utils/Types.utils';
 import { PackageDeclaration } from '../Common';
+import { collateModels } from '../../utils/Models.utils';
 
 export function Demo(asyncapi, params) {
   const channels = Object.entries(asyncapi.channels()).map(([key, value]) => ({key,value}));
 
-  let foundPubAndSub = channels.filter(function(el) {
+  const foundPubAndSub = channels.filter((el) => {
     return el.value.publish && el.value.subscribe;
   });
 
-  let foundPubOrSub = channels.filter(function(el) {
+  const foundPubOrSub = channels.filter((el) => {
     return el.value.publish || el.value.subscribe;
   });
 
@@ -37,15 +38,11 @@ export function Demo(asyncapi, params) {
   const channelName = channel.key;
 
   // Get payload from either publish or subscribe
+  const targetMessageName = channel.value.publish ? channel.value.publish().message().uid() : channel.value.subscribe().message().uid();
   const targetPayloadProperties = channel.value.publish ? channel.value.publish().message().payload().properties() : channel.value.subscribe().message().payload().properties();
 
   // Find message name from messages array
-  const messages = Object.entries(asyncapi.components().messages()).map(([key, value]) => ({key,value}));
-  let targetMessageName = messages.filter(function(el) {
-    return el.value.payload().properties().toString() === targetPayloadProperties.toString();
-  })[0].key;
-
-  const messageNameTitleCase = targetMessageName.charAt(0).toUpperCase() + targetMessageName.slice(1);
+  const messageNameTitleCase = toJavaClassName(targetMessageName);
 
   // Handle producer creation
   const producerPath = `${javaPackageToPath(params.package)}DemoProducer.java`;

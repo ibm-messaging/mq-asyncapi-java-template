@@ -26,9 +26,9 @@ export function Consumers(asyncapi, channels, params) {
 
     const packagePath = javaPackageToPath(params.package);
 
-    const message = ChannelToMessage(channel, asyncapi);
-    
     if (channel.subscribe()) {
+      const message = channel.subscribe().message();
+      
       return (
         <File name={`${packagePath}${className}.java`}>
           <PackageDeclaration path={params.package}></PackageDeclaration>
@@ -40,7 +40,7 @@ export function Consumers(asyncapi, channels, params) {
             <ClassConstructor name={className}>
               <ConsumerConstructor asyncapi={asyncapi} params={params} name={name}/>
             </ClassConstructor>
-      
+            
             <ReceiveMessage message={message}></ReceiveMessage>
 
           </Class>

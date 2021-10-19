@@ -152,18 +152,21 @@ test('EnvJson extracts correct values', async () => {
   const generator = new Generator(path.normalize('./'), OUTPUT_DIR, { forceWrite: true, templateParams: params });
   await generator.generateFromFile(path.resolve('test', yaml));
   
-  expect(testCommon.EnvJson({asyncapi: generator.asyncapi, params: generator.templateParams})).toBe(`
-  {
-    "MQ_ENDPOINTS": [{
-      "HOST": "localhost",
-      "PORT": "1414",
-      "CHANNEL": "DEV.APP.SVRCONN",
-      "QMGR": "QM1",
-      "APP_USER": "app",
-      "APP_PASSWORD": "passw0rd"
+  // Check values are functionally equivilent, ignoring whitespace, 
+  // Stringifying is used as deep equality is not guaranteed 
+  const generatedJson = JSON.stringify(JSON.parse(testCommon.EnvJson({asyncapi: generator.asyncapi, params: generator.templateParams})));
+  const expectedJson = JSON.stringify({
+    MQ_ENDPOINTS: [{
+      HOST: 'localhost',
+      PORT: '1414',
+      CHANNEL: 'DEV.APP.SVRCONN',
+      QMGR: 'QM1',
+      APP_USER: 'app',
+      APP_PASSWORD: 'passw0rd'
     }]
-  }
-  `);
+  });
+  
+  expect(expectedJson).toBe(generatedJson);
 });
 
 // Test ImportModels
@@ -180,6 +183,6 @@ test('ImportModels are generated', async () => {
   const generator = new Generator(path.normalize('./'), OUTPUT_DIR, { forceWrite: true, templateParams: params });
   await generator.generateFromFile(path.resolve('test', yaml));
 
-  expect(testCommon.ImportModels({messages: generator.asyncapi.components().messages(), params: generator.templateParams})).toStrictEqual([`
+  expect(testCommon.ImportModels({asyncapi: generator.asyncapi, params: generator.templateParams})).toStrictEqual([`
 import com.ibm.mq.samples.jms.models.Single;`]);
 });

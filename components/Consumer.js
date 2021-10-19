@@ -14,6 +14,8 @@
 * limitations under the License.
 */
 
+import { toJavaClassName } from '../utils/String.utils';
+
 export function ConsumerDeclaration() {
   return `
   private JMSConsumer consumer = null;
@@ -44,7 +46,7 @@ import ${params.package}.Connection;
 import ${params.package}.PubSubBase;
 
 import ${params.package}.models.ModelContract;
-import ${params.package}.models.${message.name};
+import ${params.package}.models.${toJavaClassName(message.uid())};
 `;
 }
 
@@ -72,7 +74,7 @@ export function ReceiveMessage({ message }) {
                 TextMessage textMessage = (TextMessage) receivedMessage;
                 try {
                     logger.info("Received message: " + textMessage.getText());
-                    ${message.name} receivedObject = new ObjectMapper().readValue(textMessage.getText(), ${message.name}.class);
+                    ${toJavaClassName(message.uid())} receivedObject = new ObjectMapper().readValue(textMessage.getText(), ${toJavaClassName(message.uid())}.class);
                     logger.info("Received message type: " + receivedObject.getClass().getName());
 
                     /*
