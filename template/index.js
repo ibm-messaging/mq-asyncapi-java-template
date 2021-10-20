@@ -34,7 +34,6 @@ import { Producers } from '../components/Files/Producers';
 import { Consumers } from '../components/Files/Consumers';
 
 export default function({ asyncapi, params }) {
-
   if (!asyncapi.hasComponents()) {
     return null;
   }

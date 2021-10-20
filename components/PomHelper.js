@@ -16,18 +16,17 @@
 
 import { Dependency } from './XML/Dependency';
 import { resolveDependencies } from '../utils/DependencyResolver.utils';
-import { render, Indent, IndentationTypes} from '@asyncapi/generator-react-sdk';
+import { render } from '@asyncapi/generator-react-sdk';
 
 export function PomHelper({ server, params }) {
-
   // Resolve additional dependencies depending on protocol supplied
-  let supportedProtocol = server.protocol()
-  let dependencies = resolveDependencies(supportedProtocol);
+  const supportedProtocol = server.protocol();
+  const dependencies = resolveDependencies(supportedProtocol);
   
-  let protocolDependencies = ``;
+  let protocolDependencies = '';
 
-  for(let dependency of dependencies){
-    protocolDependencies += render(<Dependency groupId={dependency.groupId} artifactId={dependency.artifactId} version={dependency.version}></Dependency>)
+  for (const dependency of dependencies) {
+    protocolDependencies += render(<Dependency groupId={dependency.groupId} artifactId={dependency.artifactId} version={dependency.version}></Dependency>);
   }
 
   return `

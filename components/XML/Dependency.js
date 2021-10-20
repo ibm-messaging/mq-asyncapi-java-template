@@ -15,11 +15,11 @@
 */
 
 export function Dependency({groupId, artifactId, version}) {
-    return `
+  return `
     <dependency>
         <groupId>${groupId}</groupId>
         <artifactId>${artifactId}</artifactId>
         <version>${version}</version>
     </dependency>
-    `
+    `;
 }
