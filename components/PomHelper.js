@@ -26,7 +26,7 @@ export function PomHelper({ server, params }) {
   let protocolDependencies = '';
 
   for (const dependency of dependencies) {
-    protocolDependencies += render(<Dependency groupId={dependency.groupId} artifactId={dependency.artifactId} version={dependency.version}></Dependency>);
+    protocolDependencies += render(<Dependency groupId={dependency.groupId} artifactId={dependency.artifactId} version={dependency.version}/>);
   }
 
   return `
