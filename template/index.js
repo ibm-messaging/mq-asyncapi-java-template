@@ -34,11 +34,13 @@ import { Producers } from '../components/Files/Producers';
 import { Consumers } from '../components/Files/Consumers';
 
 export default function({ asyncapi, params }) {
+
   if (!asyncapi.hasComponents()) {
     return null;
   }
 
   const channels = asyncapi.channels();
+  const server = asyncapi.server(params.server);
 
   const toRender = {
     producers: Producers(asyncapi, channels, params),
@@ -49,7 +51,7 @@ export default function({ asyncapi, params }) {
     connectionRender: ConnectionRender(params),
     envJson: EnvJsonRenderer(asyncapi, params),
     pubSubBase: PubSubBase(params),
-    pomXml: PomXmlRenderer(params),
+    pomXml: PomXmlRenderer(server, params),
     demo: Demo(asyncapi, params),
     ModelContract: ModelContractRenderer(params),
     readmeRenderer: ReadmeRenderer(asyncapi, params)
@@ -110,10 +112,10 @@ function EnvJsonRenderer(asyncapi, params) {
   );
 }
 
-function PomXmlRenderer(params) {
+function PomXmlRenderer(server, params) {
   return (
     <File name='/pom.xml'>
-      <PomHelper params={params} />
+      <PomHelper params={params} server={server} />
     </File>
   );
 }
